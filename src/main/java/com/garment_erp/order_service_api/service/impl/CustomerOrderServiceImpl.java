@@ -8,6 +8,7 @@ import com.garment_erp.order_service_api.dto.response.paginate.CustomerOrderPagi
 import com.garment_erp.order_service_api.entity.CustomerOrder;
 import com.garment_erp.order_service_api.entity.OrderDetail;
 import com.garment_erp.order_service_api.entity.OrderStatus;
+import com.garment_erp.order_service_api.exception.EntryNotFoundException;
 import com.garment_erp.order_service_api.repo.CustomerOrderRepo;
 import com.garment_erp.order_service_api.repo.OrderStatusRepo;
 import com.garment_erp.order_service_api.service.CustomerOrderService;
@@ -30,7 +31,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     public void createOrder(CustomerOrderRequestDto requestDto) {
 
         OrderStatus orderStatus =  orderStatusRepo.findByStatus("PENDING").orElseThrow(
-                ()-> new RuntimeException("Order status not found")
+                ()-> new EntryNotFoundException("Order status not found")
         );
 
         CustomerOrder customerOrder = new CustomerOrder();
@@ -52,7 +53,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     @Override
     public void manageRemark(String remark, String orderId) {
         CustomerOrder customerOrder = customerOrderRepo.findById(orderId).orElseThrow(
-                ()->new RuntimeException(String.format("Order not found with %s", orderId))
+                ()->new EntryNotFoundException(String.format("Order not found with %s", orderId))
         );
 
         customerOrder.setRemark(remark);
@@ -62,10 +63,10 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     @Override
     public void manageStatus(String status, String orderId) {
         CustomerOrder customerOrder = customerOrderRepo.findById(orderId).orElseThrow(
-                ()->new RuntimeException(String.format("Order not found with %s", orderId))
+                ()->new EntryNotFoundException(String.format("Order not found with %s", orderId))
         );
         OrderStatus orderStatus =  orderStatusRepo.findByStatus("PENDING").orElseThrow(
-                ()-> new RuntimeException("Order status not found")
+                ()-> new EntryNotFoundException("Order status not found")
         );
         customerOrder.setOrderStatus(orderStatus);
         customerOrderRepo.save(customerOrder);
@@ -75,7 +76,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     @Override
     public void updateOrder(CustomerOrderRequestDto requestDto, String orderId) {
         CustomerOrder customerOrder = customerOrderRepo.findById(orderId).orElseThrow(
-                ()->new RuntimeException(String.format("Order not found with %s", orderId))
+                ()->new EntryNotFoundException(String.format("Order not found with %s", orderId))
         );
         customerOrder.setOrderDate(requestDto.getOrderDate());
         customerOrder.setTotalAmount(requestDto.getTotalAmount());
@@ -86,7 +87,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     public CustomerOrderResponseDto findOrderById(String orderId){
 
         CustomerOrder customerOrder = customerOrderRepo.findById(orderId).orElseThrow(
-                ()->new RuntimeException(String.format("Order not found with %s", orderId))
+                ()->new EntryNotFoundException(String.format("Order not found with %s", orderId))
         );
 
         return toCustomerOrderResponseDto(customerOrder);
@@ -96,7 +97,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     @Override
     public void deleteById(String orderId){
         CustomerOrder customerOrder = customerOrderRepo.findById(orderId).orElseThrow(
-                ()->new RuntimeException(String.format("Order not found with %s", orderId))
+                ()->new EntryNotFoundException(String.format("Order not found with %s", orderId))
         );
 
         customerOrderRepo.delete(customerOrder);
