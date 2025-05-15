@@ -23,7 +23,7 @@ public class CustomerOrder {
     private String userId;
     @Column(name="order_date", nullable = false, columnDefinition = "DATETIME")
     private Date orderDate;
-    @Column(name="total_amount", nullable = false, precision = 10, scale = 2)
+    @Column(name="total_amount", nullable = false)
     private double totalAmount;
     @Column(name="remark", length = 750)
     private String remark;

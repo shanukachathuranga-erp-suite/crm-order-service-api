@@ -17,9 +17,9 @@ public class OrderDetail {
     private String productId;
     @Column(name = "qty", nullable = false)
     private int qty;
-    @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "unit_price", nullable = false)
     private double unitPrice;
-    @Column(name = "discount", precision = 10, scale = 2)
+    @Column(name = "discount")
     private double discount;
     @ManyToOne
     @JoinColumn(name = "customer_order_id")
